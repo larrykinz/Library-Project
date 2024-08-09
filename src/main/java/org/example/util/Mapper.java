@@ -19,7 +19,7 @@ public class Mapper {
         newBook.setTitle(addbookRequest.getTitle());
         newBook.setAuthor(addbookRequest.getAuthor());
         newBook.setIsbn(addbookRequest.getIsbn());
-        newBook.setStatus(addbookRequest.getType());
+        newBook.setType(addbookRequest.getType());
         return newBook;
     }
 
@@ -46,7 +46,7 @@ public class Mapper {
         newUpdateBook.setBookId(book.getId());
         newUpdateBook.setAuthor(book.getAuthor());
         newUpdateBook.setIsbn(updateBookRequest.getIsbn());
-        newUpdateBook.setType(book.getStatus());
+        newUpdateBook.setType(book.getType());
         newUpdateBook.setLocalDateTime(LocalDateTime.now());
         return newUpdateBook;
     }
@@ -74,5 +74,6 @@ public class Mapper {
         newDeleteBook.setLocalDateTime(LocalDateTime.now());
         return newDeleteBook;
     }
+
 
 }

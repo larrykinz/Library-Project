@@ -2,6 +2,7 @@ package org.example.services.interfaces;
 
 import org.example.dto.request.*;
 import org.example.dto.response.*;
+import org.springframework.stereotype.Repository;
 
 public interface StaffServices {
     public AddBookResponse addBook(AddBookRequest addbookRequest);

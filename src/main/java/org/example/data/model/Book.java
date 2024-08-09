@@ -13,7 +13,8 @@ public class Book {
     private String author;
     private String isbn;
     private String publishDate;
-    private Category status;
+    private Category type;
+    private boolean isAvailable=true;
     private LocalDateTime localDateTime;
 }
 

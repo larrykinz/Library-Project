@@ -37,13 +37,11 @@ public class StaffServiceImpl implements StaffServices {
     @Override
     public DeleteBookResponse deleteBook(DeleteBookRequest deleteBookRequest) {
         for (Book book : bookRepository.findAll()) {
-            if (book.getId().equals(deleteBookRequest.getBookId())){
-                bookRepository.delete(book);
-            }
-            throw new BookDoesNotExistException("book dosen't exist");
-        }
+            if (book.getId().equals(deleteBookRequest.getBookId())) bookRepository.delete(book);
+            return getDeleteBookResponse(deleteBookRequest);
 
-        return getDeleteBookResponse(deleteBookRequest);    
+        }
+        throw new BookDoesNotExistException("book does not exist");
     }
 
     @Override
@@ -85,16 +83,12 @@ public class StaffServiceImpl implements StaffServices {
             }
             throw new staffInvalidLoginException("INVALID LOGIN");
         }
-        return getLoginResponse(loginRequest);
-
-    }
-
-    private static LoginResponse getLoginResponse(LoginRequest loginRequest) {
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setStaffName(loginRequest.getStaffName());
         loginResponse.setPassword(loginRequest.getPassword());
         loginResponse.setLoggedIn(true);
         return loginResponse;
+
     }
 
 
