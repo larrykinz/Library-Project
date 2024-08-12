@@ -12,10 +12,10 @@ public class Book {
     private String title;
     private String author;
     private String isbn;
-    private String publishDate;
+    private String publicationDate;
     private Category type;
-    private boolean isAvailable=true;
-    private LocalDateTime localDateTime;
+    private boolean isAvailable;
+
 }
 
 

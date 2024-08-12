@@ -1,16 +1,12 @@
 package org.example.services.implementation;
 
 import org.example.data.model.Book;
+import org.example.data.model.Member;
 import org.example.data.repository.BookRepository;
 import org.example.data.repository.MemberRepository;
-import org.example.dto.request.BorrowBookRequest;
-import org.example.dto.request.ReturnBookRequest;
-import org.example.dto.request.SearchBookRequest;
-import org.example.dto.response.BorrowBookResponse;
-import org.example.dto.response.ReturnBookResponse;
-import org.example.dto.response.SearchBookResponse;
-import org.example.exception.BookAlreadyExistException;
-import org.example.exception.BookDoesNotExistException;
+import org.example.dto.request.*;
+import org.example.dto.response.*;
+import org.example.exception.*;
 import org.example.services.interfaces.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,20 +36,19 @@ public class MemberServiceimpl  implements MemberService {
         return books;
     }
     public BorrowBookResponse borrowBook(BorrowBookRequest borrowBookRequest) {
-        Book bookResult = null;
         for (Book book : bookRepository.findAll()) {
             if(book.getId().equals(borrowBookRequest.getId())){
                 book.setAvailable(false);
-                bookResult = bookRepository.save(book);
-                break;
+                bookRepository.save(book);
             }
+            throw new BookNotFoundException("Book Not Found");
         }
-        if(bookResult == null)throw new BookDoesNotExistException("Book Not Found");
+
         BorrowBookResponse borrowBookResponse = new BorrowBookResponse();
-        borrowBookResponse.setId(bookResult.getId());
-        borrowBookResponse.setTitle(bookResult.getTitle());
-        borrowBookResponse.setAuthor(bookResult.getAuthor());
-        borrowBookResponse.setIsbn(bookResult.getIsbn());
+        borrowBookResponse.setId(borrowBookRequest.getId());
+        borrowBookResponse.setTitle(borrowBookResponse.getTitle());
+        borrowBookResponse.setAuthor(borrowBookResponse.getAuthor());
+        borrowBookResponse.setIsbn(borrowBookResponse.getIsbn());
         return borrowBookResponse;
     }
       public ReturnBookResponse returnBook(ReturnBookRequest returnBookRequest) {
@@ -72,5 +67,50 @@ public class MemberServiceimpl  implements MemberService {
           }
           throw new BookDoesNotExistException("Book Not Found");
       }
+      public RegisterMemberResponse registerMember(RegisterMemberRequest registerMemberRequest){
+        for(Member member : memberRepository.findAll()){
+            if(member.getName().equals(registerMemberRequest.getName())){
+                throw new MemberAlreadyExist("Member Already Exist");
+            }
+            member.setName(registerMemberRequest.getName());
+            member.setPassword(registerMemberRequest.getPassword());
+        }
+        RegisterMemberResponse registerMemberResponse = new RegisterMemberResponse();
+        registerMemberResponse.setName(registerMemberRequest.getName());
+        registerMemberResponse.setMessage("Successfully Registered!");
+        return registerMemberResponse;
+
+      }
+      public SignInResponse signIn(SignInRequest signInRequest){
+        for (Member member : memberRepository.findAll()) {
+            if(member.getName().equals(signInRequest.getName())){
+                member.setName(signInRequest.getName());
+                member.setMemberId(signInRequest.getMemberId());
+                memberRepository.save(member);
+            }
+            throw new MemberDosentExist("Member dosent Exist");
+        }
+        SignInResponse signInResponse = new SignInResponse();
+        signInResponse.setName(signInRequest.getName());
+        signInResponse.setMessage("Sign In Successful");
+        return signInResponse;
+
+      }
+    public SignOutResponse signOut(SignOutRequest signOutRequest) {
+        for (Member member : memberRepository.findAll()) {
+            if (member.getName().equals(signOutRequest.getName())) {
+                member.setSignedIn(false);
+                memberRepository.save(member);
+            }
+            throw new MemberDosentExist("Member does not exist");
+        }
+        SignOutResponse signOutResponse = new SignOutResponse();
+        signOutResponse.setName(signOutRequest.getName());
+        signOutResponse.setMessage("Sign Out Successful");
+        return signOutResponse;
+    }
+
+
+
 
 }

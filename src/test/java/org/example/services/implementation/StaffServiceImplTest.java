@@ -4,8 +4,10 @@ import org.example.data.model.Staff;
 import org.example.data.repository.StaffRepository;
 import org.example.dto.request.AddBookRequest;
 import org.example.dto.request.DeleteBookRequest;
+import org.example.dto.request.UpdateBookRequest;
 import org.example.dto.response.AddBookResponse;
 import org.example.dto.response.DeleteBookResponse;
+import org.example.dto.response.UpdateBookResponse;
 import org.example.exception.BookAlreadyExistException;
 import org.example.exception.BookDoesNotExistException;
 import org.example.services.interfaces.StaffServices;
@@ -80,6 +82,21 @@ class StaffServiceImplTest {
         catch (BookDoesNotExistException e){
             assertThat(e.getMessage()).isEqualTo("book does not exist");
         }
+
+    }
+    @Test
+    public void UpdateBookTest(){
+        AddBookRequest addBookRequest = new AddBookRequest();
+        addBookRequest.setTitle("jollof");
+        addBookRequest.setIsbn("20456");
+        addBookRequest.setType(TEXTBOOK);
+        addBookRequest.setAuthor("wicked Author");
+        AddBookResponse addBookResponse = staffServices.addBook(addBookRequest);
+
+       UpdateBookRequest updateBookRequest = new UpdateBookRequest();
+       updateBookRequest.setId(addBookResponse.getBookId());
+       updateBookRequest.setIsbn("20677");
+      // UpdateBookResponse updateBookResponse = StaffServices.updateBook(updateBookRequest);
 
     }
 

@@ -47,8 +47,10 @@ public class StaffServiceImpl implements StaffServices {
     @Override
     public UpdateBookResponse updateBook(UpdateBookRequest updateBookRequest) {
         for (Book book : bookRepository.findAll()) {
-            if (book.getId().equals(updateBookRequest.getBookId())){
+            if (book.getId().equals(updateBookRequest.getId())){
                 bookRepository.delete(book);
+                book.setId(updateBookRequest.getId());
+                bookRepository.save(book);
 
             }
             throw new BookDoesNotExistException("book dosen't exist");
@@ -65,8 +67,13 @@ public class StaffServiceImpl implements StaffServices {
             if (staff.getStaffName().equals(registerRequest.getStaffName())) {
                 throw new StaffAlreadyExistException("staff already exist");
             }
+            staff.setStaffName(registerRequest.getStaffName());
+            staff.setPassword(registerRequest.getPassword());
+            staff.setEmail("");
+            staffRepository.save(staff);
         }
         Staff staff = mapStaff(registerRequest);
+
         staffRepository.save(staff);
         return getRegisterResponse(staff);
     }
@@ -77,8 +84,7 @@ public class StaffServiceImpl implements StaffServices {
     public LoginResponse loginStaff(LoginRequest loginRequest) {
         for (Staff staff : staffRepository.findAll()) {
             if (staff.getStaffName().equals(loginRequest.getStaffName())) {
-                staff.setStaffName(loginRequest.getStaffName());
-                staff.setPassword(loginRequest.getPassword());
+                staff.setLoggedin(true);
                 staffRepository.save(staff);
             }
             throw new staffInvalidLoginException("INVALID LOGIN");

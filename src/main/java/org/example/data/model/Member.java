@@ -10,5 +10,7 @@ public class Member {
    private String name;
    private int age;
    private String gender;
+   private String password;
+   private boolean SignedIn;
 
 }

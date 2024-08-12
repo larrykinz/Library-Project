@@ -9,7 +9,7 @@ public interface StaffServices {
 
     public DeleteBookResponse deleteBook(DeleteBookRequest deletebookRequest);
 
-    public UpdateBookResponse updateBook(UpdateBookRequest updateBookRequest);
+    public  UpdateBookResponse updateBook(UpdateBookRequest updateBookRequest);
 
     public RegisterResponse registerStaff(RegisterRequest registerRequest);
 

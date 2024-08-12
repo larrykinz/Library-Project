@@ -10,9 +10,9 @@ import org.example.dto.response.AddBookResponse;
 import org.example.dto.response.DeleteBookResponse;
 import org.example.dto.response.RegisterResponse;
 import org.example.dto.response.UpdateBookResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
-
 public class Mapper {
     public static Book map(AddBookRequest addbookRequest) {
         Book newBook = new Book();
