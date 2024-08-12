@@ -17,5 +17,4 @@ public interface MemberService {
 
     public SignOutResponse signOut(SignOutRequest signOutRequest);
 
-    public List<Book> searchBook(String title, String author, String isbn);
 }

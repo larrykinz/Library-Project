@@ -20,21 +20,7 @@ public class MemberServiceimpl  implements MemberService {
     private MemberRepository memberRepository;
     @Autowired
     private BookRepository bookRepository;
-    public List<Book> searchBook(String title, String author, String isbn) {
-        List<Book> books = new ArrayList<>();
 
-        if (title != null && !title.isEmpty()) {
-            books = bookRepository.findByTitleContainingIgnoreCase(title);
-        } else if (author != null && !author.isEmpty()) {
-            books = bookRepository.findByAuthorContainingIgnoreCase(author);
-        } else if (isbn != null && !isbn.isEmpty()) {
-            books = bookRepository.findByIsbnContainingIgnoreCase(isbn);
-        } else {
-            books = bookRepository.findAll();
-        }
-
-        return books;
-    }
     public BorrowBookResponse borrowBook(BorrowBookRequest borrowBookRequest) {
         for (Book book : bookRepository.findAll()) {
             if(book.getId().equals(borrowBookRequest.getId())){
