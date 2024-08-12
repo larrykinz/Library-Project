@@ -11,4 +11,5 @@ public class Staff {
     private String password;
     private String email;
     private boolean loggedin;
+    private String message;
 }

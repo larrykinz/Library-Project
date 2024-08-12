@@ -6,15 +6,13 @@ import org.example.data.repository.BookRepository;
 import org.example.data.repository.StaffRepository;
 import org.example.dto.request.*;
 import org.example.dto.response.*;
-import org.example.exception.BookAlreadyExistException;
-import org.example.exception.BookDoesNotExistException;
-import org.example.exception.StaffAlreadyExistException;
-import org.example.exception.staffInvalidLoginException;
+import org.example.exception.*;
 import org.example.services.interfaces.StaffServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import static org.example.util.Mapper.*;
 
@@ -82,15 +80,12 @@ public class StaffServiceImpl implements StaffServices {
 
     @Override
     public LoginResponse loginStaff(LoginRequest loginRequest) {
-        for (Staff staff : staffRepository.findAll()) {
-            if (staff.getStaffName().equals(loginRequest.getStaffName())) {
-                staff.setLoggedin(true);
-                staffRepository.save(staff);
-            }
-            throw new staffInvalidLoginException("INVALID LOGIN");
-        }
+        Staff staff = staffRepository.findByEmail(loginRequest.getEmail());
+        if(staff==null) throw new IllegalArgumentException("User Not Found");
+        if(!staff.getPassword().equals(loginRequest.getPassword()))throw new IllegalArgumentException("INVALID Credentials");
+
         LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setStaffName(loginRequest.getStaffName());
+        loginResponse.setStaffName(loginRequest.getEmail());
         loginResponse.setPassword(loginRequest.getPassword());
         loginResponse.setLoggedIn(true);
         return loginResponse;
