@@ -30,6 +30,7 @@ public class Mapper {
         addBookResponse.setAuthor(newBook.getAuthor());
         addBookResponse.setIsbn(newBook.getIsbn());
         addBookResponse.setLocalDateTime(LocalDateTime.now());
+        addBookResponse.setMessage("Book added successfully");
         return addBookResponse;
     }
 
@@ -44,6 +45,7 @@ public class Mapper {
     public static UpdateBookResponse getUpdateBookResponse(UpdateBookRequest updateBookRequest, Book book) {
         UpdateBookResponse newUpdateBook = new UpdateBookResponse();
         newUpdateBook.setBookId(book.getId());
+        newUpdateBook.setTitle(updateBookRequest.getTitle());
         newUpdateBook.setAuthor(book.getAuthor());
         newUpdateBook.setIsbn(updateBookRequest.getIsbn());
         newUpdateBook.setType(book.getType());

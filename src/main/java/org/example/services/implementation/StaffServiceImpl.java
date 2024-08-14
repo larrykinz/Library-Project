@@ -44,19 +44,20 @@ public class StaffServiceImpl implements StaffServices {
 
     @Override
     public UpdateBookResponse updateBook(UpdateBookRequest updateBookRequest) {
+        Book bookToUpdate = null;
         for (Book book : bookRepository.findAll()) {
-            if (book.getId().equals(updateBookRequest.getId())){
-                bookRepository.delete(book);
-                book.setId(updateBookRequest.getId());
-                bookRepository.save(book);
-
+            if (book.getId().equals(updateBookRequest.getBookId())) {
+                bookToUpdate = book;
+                break;
             }
-            throw new BookDoesNotExistException("book dosen't exist");
         }
-        Book book = mapUpdate(updateBookRequest);
-        bookRepository.save(book);
+        if (bookToUpdate == null) {
+            throw new BookDoesNotExistException("Book doesn't exist");
+        }
+        bookToUpdate = mapUpdate(updateBookRequest);
 
-        return getUpdateBookResponse(updateBookRequest, book);
+        bookRepository.save(bookToUpdate);
+        return getUpdateBookResponse(updateBookRequest, bookToUpdate);
     }
 
     @Override
@@ -78,6 +79,7 @@ public class StaffServiceImpl implements StaffServices {
 
 
 
+
     @Override
     public LoginResponse loginStaff(LoginRequest loginRequest) {
         Staff staff = staffRepository.findByEmail(loginRequest.getEmail());
@@ -85,12 +87,16 @@ public class StaffServiceImpl implements StaffServices {
         if(!staff.getPassword().equals(loginRequest.getPassword()))throw new IllegalArgumentException("INVALID Credentials");
 
         LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setStaffName(loginRequest.getEmail());
+        loginResponse.setStaffName(loginRequest.getStaffName());
         loginResponse.setPassword(loginRequest.getPassword());
+        loginResponse.setEmail(staff.getEmail());
         loginResponse.setLoggedIn(true);
         return loginResponse;
 
     }
+
+
+
 
 
 }

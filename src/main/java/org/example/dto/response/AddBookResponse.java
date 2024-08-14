@@ -12,4 +12,5 @@ public class AddBookResponse {
     private String isbn;
     private Category type;
     private LocalDateTime localDateTime;
+    private String message="";
 }
