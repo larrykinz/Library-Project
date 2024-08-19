@@ -8,4 +8,5 @@ public class ReturnBookResponse {
     private String title;
     private String author;
     private String isbn;
+    private boolean isAvailable;
 }

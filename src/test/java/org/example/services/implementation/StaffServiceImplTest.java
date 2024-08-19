@@ -1,6 +1,4 @@
 package org.example.services.implementation;
-import org.example.*;
-import org.example.data.model.Book;
 import org.example.data.model.Staff;
 import org.example.data.repository.BookRepository;
 import org.example.data.repository.StaffRepository;
@@ -13,8 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.example.data.model.Category.STORYBOOK;

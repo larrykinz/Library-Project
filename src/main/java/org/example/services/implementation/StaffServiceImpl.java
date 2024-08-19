@@ -62,17 +62,10 @@ public class StaffServiceImpl implements StaffServices {
 
     @Override
     public RegisterResponse registerStaff(RegisterRequest registerRequest) {
-        for(Staff staff : staffRepository.findAll()) {
-            if (staff.getStaffName().equals(registerRequest.getStaffName())) {
-                throw new StaffAlreadyExistException("staff already exist");
-            }
-            staff.setStaffName(registerRequest.getStaffName());
-            staff.setPassword(registerRequest.getPassword());
-            staff.setEmail("");
-            staffRepository.save(staff);
+        if (staffRepository.findStaffByStaffName(registerRequest.getStaffName())!=null){
+            throw new StaffAlreadyExistException("Staff already exists");
         }
         Staff staff = mapStaff(registerRequest);
-
         staffRepository.save(staff);
         return getRegisterResponse(staff);
     }

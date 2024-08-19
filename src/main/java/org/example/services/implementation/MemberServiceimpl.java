@@ -20,23 +20,22 @@ public class MemberServiceimpl  implements MemberService {
     private MemberRepository memberRepository;
     @Autowired
     private BookRepository bookRepository;
-
     public BorrowBookResponse borrowBook(BorrowBookRequest borrowBookRequest) {
         for (Book book : bookRepository.findAll()) {
-            if(book.getId().equals(borrowBookRequest.getId())){
+            if (book.getId().equals(borrowBookRequest.getId())){
                 book.setAvailable(false);
                 bookRepository.save(book);
+                BorrowBookResponse borrowBookResponse = new BorrowBookResponse();
+                borrowBookResponse.setId(borrowBookRequest.getId());
+                borrowBookResponse.setTitle(book.getTitle());
+                borrowBookResponse.setAuthor(book.getAuthor());
+                borrowBookResponse.setIsbn(book.getIsbn());
+                return borrowBookResponse;
             }
-            throw new BookNotFoundException("Book Not Found");
         }
-
-        BorrowBookResponse borrowBookResponse = new BorrowBookResponse();
-        borrowBookResponse.setId(borrowBookRequest.getId());
-        borrowBookResponse.setTitle(borrowBookResponse.getTitle());
-        borrowBookResponse.setAuthor(borrowBookResponse.getAuthor());
-        borrowBookResponse.setIsbn(borrowBookResponse.getIsbn());
-        return borrowBookResponse;
+        throw new BookNotFoundException("Book Not Found");
     }
+
       public ReturnBookResponse returnBook(ReturnBookRequest returnBookRequest) {
           for (Book book : bookRepository.findAll()) {
               if (book.getId().equals(returnBookRequest.getId())) {
